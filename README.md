@@ -2,7 +2,7 @@
 
 Simple OSINT Tool is a Python-based project designed to explore Open-Source Intelligence (OSINT) techniques, with a focus on phone number lookups.
 
- Status: Work in Progress
+ **Status: Work in Progress**
 
 This project is still under development and contains several bugs and incomplete features. Areas such as links.py and the email lookup functionality still need debugging and improvement.
 
