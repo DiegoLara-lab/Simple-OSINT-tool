@@ -45,26 +45,3 @@ def analyze(raw: str, default_region: str | None = None) -> dict:
         "line_type_estimate": LINE_TYPES.get(phonenumbers.number_type(parsed), "unknown"),
     }
 
-
-def twilio_lookup(e164: str) -> dict:
-    """Optional paid lookup for current carrier and line type.
-    Requires TWILIO_SID and TWILIO_TOKEN in your .env file."""
-    sid, token = os.getenv("TWILIO_SID"), os.getenv("TWILIO_TOKEN")
-    if not sid or not token:
-        return {"error": "Twilio credentials not set"}
-
-    url = f"https://lookups.twilio.com/v2/PhoneNumbers/{e164}"
-    try:
-        r = httpx.get(url, params={"Fields": "line_type_intelligence"},
-                      auth=(sid, token), timeout=10)
-        r.raise_for_status()
-        data = r.json()
-    except httpx.HTTPError as e:
-        return {"error": str(e)}
-
-    lti = data.get("line_type_intelligence") or {}
-    return {
-        "valid": data.get("valid"),
-        "line_type": lti.get("type"),
-        "current_carrier": lti.get("carrier_name"),
-    }
